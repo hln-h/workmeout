@@ -1,5 +1,10 @@
 import "./App.css";
 import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Exercise from "./components/Exercise";
+import Exercises from "./components/Exercises";
+
+// const API_KEY = "b11b169c23d1bc419d0c3430dc2b909cc97e5373";
 
 export default function App() {
   let [workout, setWorkout] = useState({
@@ -8,14 +13,29 @@ export default function App() {
     bodyPart: "",
   });
 
+  let [workoutParts, setWorkoutParts] = useState("");
+
   const handleInputChange = (e) => {
     const { value, name } = e.target;
     setWorkout((workout) => ({ ...workout, [name]: value }));
   };
 
-  const createWorkout = (e) => {
+  const createWorkout = async (e) => {
     e.preventDefault();
     console.log(workout);
+    try {
+      const response = await fetch(
+        `http://wger.de/api/v2/exercise/?language=2&/?muscles=${workout.bodyPart}&equipment=${workout.equipment}`
+      );
+
+      if (!response.ok) throw new Error(response.statusText);
+      const data = await response.json();
+      setWorkoutParts(data.results);
+      console.log(workoutParts);
+      // .then((data.results) => {setWorkoutParts(data.results)});
+    } catch (error) {
+      console.log("error");
+    }
   };
 
   const { time, equipment, bodyPart } = workout;
@@ -32,25 +52,34 @@ export default function App() {
           onChange={handleInputChange}
         />
         <select name="equipment" value={equipment} onChange={handleInputChange}>
-          <option value="barbell">Barbell</option>
-          <option value="bench">Bench</option>
-          <option value="dumbell">Dumbell</option>
-          <option value="mat">Mat</option>
-          <option value="inclineBench">Incline Bench</option>
-          <option value="kettlebell">Kettlebell</option>
-          <option value="none">None- bodyweight</option>
-          <option value="pullupBar">Pull-up Bar</option>
-          <option value="swissBall">Swiss Ball</option>
-          <option value="szBar">SZ Bar</option>
+          <option value="1">Barbell</option>
+          <option value="8">Bench</option>
+          <option value="3">Dumbell</option>
+          <option value="4">Mat</option>
+          <option value="9">Incline Bench</option>
+          <option value="10">Kettlebell</option>
+          <option value="7">None- bodyweight</option>
+          <option value="6">Pull-up Bar</option>
+          <option value="5">Swiss Ball</option>
+          <option value="2">SZ Bar</option>
         </select>
         <select name="bodyPart" value={bodyPart} onChange={handleInputChange}>
-          <option value="upperBody">Upper Body</option>
-          <option value="lowerBody">Lower Body</option>
-          <option value="fullBody">Full Body</option>
-          <option value="core">Abs</option>
+          <option value="8,12,11">Upper Body</option>
+          <option value="9">Lower Body</option>
+          <option value="">Full Body</option>
+          <option value="10">Abs</option>
         </select>
         <button type="submit">Work me out!</button>
       </form>
+      <section>
+        {/* <ul> */}
+        Workout:
+        {/* {workoutParts.map((workoutPart) => (
+            <li key={workoutPart.id}>{workoutPart[0]["name"]}</li>
+          ))}
+        </ul> */}
+      </section>
     </div>
   );
 }
+// [0]["name"];
