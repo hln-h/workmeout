@@ -1,8 +1,8 @@
 import "./App.css";
 import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Exercise from "./components/Exercise";
-import Exercises from "./components/Exercises";
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import Exercise from "./components/Exercise";
+// import Exercises from "./components/Exercises";
 
 // const API_KEY = "b11b169c23d1bc419d0c3430dc2b909cc97e5373";
 
@@ -13,7 +13,7 @@ export default function App() {
     bodyPart: "",
   });
 
-  let [workoutParts, setWorkoutParts] = useState("");
+  let [workoutParts, setWorkoutParts] = useState([]);
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
@@ -25,14 +25,13 @@ export default function App() {
     console.log(workout);
     try {
       const response = await fetch(
-        `http://wger.de/api/v2/exercise/?language=2&/?muscles=${workout.bodyPart}&equipment=${workout.equipment}`
+        `https://wger.de/api/v2/exercise/?language=2&category=${workout.bodyPart}&equipment=${workout.equipment}`
       );
 
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
       setWorkoutParts(data.results);
       console.log(workoutParts);
-      // .then((data.results) => {setWorkoutParts(data.results)});
     } catch (error) {
       console.log("error");
     }
@@ -64,7 +63,7 @@ export default function App() {
           <option value="2">SZ Bar</option>
         </select>
         <select name="bodyPart" value={bodyPart} onChange={handleInputChange}>
-          <option value="8,12,11">Upper Body</option>
+          <option value="8">Upper Body</option>
           <option value="9">Lower Body</option>
           <option value="">Full Body</option>
           <option value="10">Abs</option>
@@ -72,12 +71,13 @@ export default function App() {
         <button type="submit">Work me out!</button>
       </form>
       <section>
-        {/* <ul> */}
-        Workout:
-        {/* {workoutParts.map((workoutPart) => (
-            <li key={workoutPart.id}>{workoutPart[0]["name"]}</li>
+        <ul id="workoutParts">
+          {" "}
+          Workout:
+          {workoutParts.map((workoutPart) => (
+            <li key={workoutPart.id}>{workoutPart["name"]}</li>
           ))}
-        </ul> */}
+        </ul>
       </section>
     </div>
   );
