@@ -19,7 +19,10 @@ export default function ExerciseInfo() {
   return (
     <div>
       {" "}
-      This is the profile for excercise ${data.name}.{data}
+      <h3>{data.name}</h3>
+      How to:
+      <br />
+      <div dangerouslySetInnerHTML={{ __html: data.description }} />
     </div>
   );
 }

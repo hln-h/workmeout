@@ -50,7 +50,7 @@ export default function Home() {
           onChange={handleInputChange}
         />
         <br />
-        Equipment avaliable? (mins)
+        Equipment avaliable?
         <br />
         <select name="equipment" value={equipment} onChange={handleInputChange}>
           <option value="1">Barbell</option>
