@@ -1,23 +1,22 @@
-// import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 // import database from "../database.json";
-// ​
-// export default function Exercise() {
-//   const { id } = useParams();
-//   const [data, setData] = useState({});
-// ​
-//   useEffect(() => {
-//     // in real life you would do this:
-//     // const response = await fetch(`/users/${id}`);
-//     // const data = await response.json();
-//     // setData(data);
-//     // in this example, we simulate the DB
-//     const exercise = database.find((e) => +e.id === +id);
-//     setData(exercise);
-//   }, [id]);
-// ​
-//   return
-//   <div>
-//    `This is the profile for excercise ${data.name}.`
-//    </div>;
-// }
+export default function Exercise() {
+  //   const { id } = useParams();
+  //   const [data, setData] = useState({});
+  // ​
+  //   useEffect(() => {
+  //     // in real life you would do this:
+  //     // const response = await fetch(`/users/${id}`);
+  //     // const data = await response.json();
+  //     // setData(data);
+  //     // in this example, we simulate the DB
+  //     const exercise = database.find((e) => +e.id === +id);
+  //     setData(exercise);
+  //   }, [id]);
+  // ​
+  //   return
+  //   <div>
+  //    `This is the profile for excercise ${data.name}.`
+  //    </div>;
+}

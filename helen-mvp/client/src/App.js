@@ -1,7 +1,9 @@
 import "./App.css";
 import React, { useState } from "react";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Exercise from "./components/Exercise";
+import { BrowserRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import Exercise from "./components/exercise";
 // import Exercises from "./components/Exercises";
 
 // const API_KEY = "b11b169c23d1bc419d0c3430dc2b909cc97e5373";
@@ -39,49 +41,66 @@ export default function App() {
 
   const { time, equipment, bodyPart } = workout;
   return (
-    <div className="App">
-      <h1>Work Me Out</h1>
-      <form onSubmit={createWorkout}>
-        Create a workout:
-        <input
-          placeholder="Minutes"
-          name="time"
-          value={time}
-          type="text"
-          onChange={handleInputChange}
-        />
-        <select name="equipment" value={equipment} onChange={handleInputChange}>
-          <option value="1">Barbell</option>
-          <option value="8">Bench</option>
-          <option value="3">Dumbell</option>
-          <option value="4">Mat</option>
-          <option value="9">Incline Bench</option>
-          <option value="10">Kettlebell</option>
-          <option value="7">None- bodyweight</option>
-          <option value="6">Pull-up Bar</option>
-          <option value="5">Swiss Ball</option>
-          <option value="2">SZ Bar</option>
-        </select>
-        <select name="bodyPart" value={bodyPart} onChange={handleInputChange}>
-          <option value="8">Upper Body</option>
-          <option value="9">Lower Body</option>
-          <option value="">Full Body</option>
-          <option value="10">Abs</option>
-        </select>
-        <button type="submit">Work me out!</button>
-      </form>
-      <section>
-        <ul id="workoutParts">
-          {" "}
-          Workout: 12 reps x 3 sets
-          {workoutParts
-            .sort(() => Math.random() - Math.random())
-            .slice(0, workout.time / 5)
-            .map((workoutPart) => (
-              <li key={workoutPart.id}>{workoutPart["name"]}</li>
-            ))}
-        </ul>
-      </section>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <h1>Work Me Out</h1>
+        <form onSubmit={createWorkout}>
+          <h2>Create a workout:</h2>
+          <br />
+          Duration of workout? (mins)
+          <br />
+          <input
+            placeholder="Minutes"
+            name="time"
+            value={time}
+            type="text"
+            onChange={handleInputChange}
+          />
+          <br />
+          Equipment avaliable? (mins)
+          <br />
+          <select
+            name="equipment"
+            value={equipment}
+            onChange={handleInputChange}
+          >
+            <option value="1">Barbell</option>
+            <option value="8">Bench</option>
+            <option value="3">Dumbell</option>
+            <option value="4">Mat</option>
+            <option value="9">Incline Bench</option>
+            <option value="10">Kettlebell</option>
+            <option value="7">None- bodyweight</option>
+            <option value="6">Pull-up Bar</option>
+            <option value="5">Swiss Ball</option>
+            <option value="2">SZ Bar</option>
+          </select>
+          <br />
+          What do you want to train? (mins)
+          <br />
+          <select name="bodyPart" value={bodyPart} onChange={handleInputChange}>
+            <option value="8">Upper Body</option>
+            <option value="9">Lower Body</option>
+            <option value="">Full Body</option>
+            <option value="10">Abs</option>
+          </select>
+          <button type="submit">Work me out!</button>
+        </form>
+        <section>
+          <ul id="workoutParts">
+            {" "}
+            Workout: 12 reps x 3 sets
+            {workoutParts
+              .sort(() => Math.random() - Math.random())
+              .slice(0, workout.time / 5)
+              .map((workoutPart) => (
+                <Link to="/exercise">
+                  <li key={workoutPart.id}>{workoutPart["name"]}</li>
+                </Link>
+              ))}
+          </ul>
+        </section>
+      </div>
+    </BrowserRouter>
   );
 }
