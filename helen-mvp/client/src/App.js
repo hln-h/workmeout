@@ -73,13 +73,15 @@ export default function App() {
       <section>
         <ul id="workoutParts">
           {" "}
-          Workout:
-          {workoutParts.map((workoutPart) => (
-            <li key={workoutPart.id}>{workoutPart["name"]}</li>
-          ))}
+          Workout: 12 reps x 3 sets
+          {workoutParts
+            .sort(() => Math.random() - Math.random())
+            .slice(0, workout.time / 5)
+            .map((workoutPart) => (
+              <li key={workoutPart.id}>{workoutPart["name"]}</li>
+            ))}
         </ul>
       </section>
     </div>
   );
 }
-// [0]["name"];
