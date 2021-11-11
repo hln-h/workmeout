@@ -9,6 +9,7 @@ export default function Home() {
   });
 
   let [workoutParts, setWorkoutParts] = useState([]);
+  const { time, equipment, bodyPart } = workout;
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
@@ -17,7 +18,6 @@ export default function Home() {
 
   const createWorkout = async (e) => {
     e.preventDefault();
-    console.log(workout);
     try {
       const response = await fetch(
         `https://wger.de/api/v2/exercise/?language=2&category=${workout.bodyPart}&equipment=${workout.equipment}`
@@ -26,17 +26,23 @@ export default function Home() {
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
       setWorkoutParts(data.results);
-      console.log(workoutParts);
+      setWorkout((workout) => ({
+        ...workout,
+        [time]: 0,
+        [equipment]: "",
+        [bodyPart]: "",
+      }));
     } catch (error) {
       console.log("error");
     }
   };
 
-  const { time, equipment, bodyPart } = workout;
-
   return (
     <div className="App">
-      <h1>Work Me Out</h1>
+      <Link to={`/`}>
+        {" "}
+        <h1>Work Me Out</h1>{" "}
+      </Link>
       <form onSubmit={createWorkout}>
         <h2>Create a workout:</h2>
         <br />
@@ -55,7 +61,9 @@ export default function Home() {
         <select name="equipment" value={equipment} onChange={handleInputChange}>
           <option value="1">Barbell</option>
           <option value="8">Bench</option>
-          <option value="3">Dumbell</option>
+          <option selected value="3" selected>
+            Dumbell
+          </option>
           <option value="4">Mat</option>
           <option value="9">Incline Bench</option>
           <option value="10">Kettlebell</option>
@@ -65,12 +73,14 @@ export default function Home() {
           <option value="2">SZ Bar</option>
         </select>
         <br />
-        What do you want to train? (mins)
+        What do you want to train?
         <br />
         <select name="bodyPart" value={bodyPart} onChange={handleInputChange}>
           <option value="8">Upper Body</option>
           <option value="9">Lower Body</option>
-          <option value="">Full Body</option>
+          <option selected value="" selected>
+            Full Body
+          </option>
           <option value="10">Abs</option>
         </select>
         <button type="submit">Work me out!</button>
