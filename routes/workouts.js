@@ -10,9 +10,9 @@ router.get("/", function (req, res, next) {
 //SAVE a workout to the DB
 router.post("/", async (req, res, next) => {
   try {
-    const { bodyPart, time, equipment } = req.body;
+    const { bodyPart, time, equipment, exerciseApiIds } = req.body;
     await db(
-      `INSERT INTO workouts (bodyPart, time, equipment) VALUES ("${bodyPart}", "${time}", "${equipment}""); `
+      `INSERT INTO workouts (bodyPart, time, equipment, exerciseApiIds) VALUES ("${bodyPart}", "${time}", "${equipment}", "${exerciseApiIds}"); `
     );
     const results = await db("SELECT * FROM workouts;");
     res.status(201).send(results.data);

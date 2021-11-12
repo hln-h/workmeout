@@ -10,14 +10,20 @@ export default function Home() {
 
   let [workoutParts, setWorkoutParts] = useState([]);
   const { time, equipment, bodyPart } = workout;
+  const [finalWorkout, setFinalWorkout] = useState([]);
+  const [idString, setIdString] = useState("");
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
     setWorkout((workout) => ({ ...workout, [name]: value }));
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    createWorkout();
+  };
+
   const createWorkout = async (e) => {
-    e.preventDefault();
     try {
       const response = await fetch(
         `https://wger.de/api/v2/exercise/?language=2&category=${workout.bodyPart}&equipment=${workout.equipment}`
@@ -26,15 +32,40 @@ export default function Home() {
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
       setWorkoutParts(data.results);
-      setWorkout((workout) => ({
-        ...workout,
-        [time]: 0,
-        [equipment]: "",
-        [bodyPart]: "",
-      }));
+      randomiseWorkoutParts(data.results);
     } catch (error) {
       console.log("error");
     }
+  };
+
+  const randomiseWorkoutParts = (data) => {
+    setFinalWorkout(
+      data.sort(() => Math.random() - Math.random()).slice(0, workout.time / 10)
+    );
+    console.log(finalWorkout);
+    let result = [];
+    for (let value of finalWorkout) {
+      result.push(value.id);
+    }
+    setIdString(result.join(" "));
+  };
+  console.log(idString);
+
+  const saveWorkout = () => {
+    fetch("/workouts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bodyPart: bodyPart,
+        time: time,
+        equipment: equipment,
+        exerciseApiIds: idString,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => setWorkoutParts(json));
+    setWorkout({ [time]: 0, [equipment]: "", [bodyPart]: "" });
+    setIdString("");
   };
 
   return (
@@ -43,7 +74,15 @@ export default function Home() {
         {" "}
         <h1>Work Me Out</h1>{" "}
       </Link>
-      <form onSubmit={createWorkout}>
+      <Link to={`/Exercises`}>
+        {" "}
+        <h3>My Workouts</h3>{" "}
+      </Link>
+      <Link to={`/Workouts`}>
+        {" "}
+        <h3>Exercise Library</h3>{" "}
+      </Link>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <h2>Create a workout:</h2>
         <br />
         Duration of workout? (mins)
@@ -85,20 +124,21 @@ export default function Home() {
         </select>
         <button type="submit">Work me out!</button>
       </form>
+
       <section>
         <ul id="workoutParts">
           {" "}
           Workout: 12 reps x 3 sets{" "}
-          {workoutParts
-            .sort(() => Math.random() - Math.random())
-            .slice(0, workout.time / 10)
-            .map((workoutPart) => (
-              <Link key={workoutPart.id} to={`/exerciseinfo/${workoutPart.id}`}>
-                <li>{workoutPart["name"]}</li>
-              </Link>
-            ))}{" "}
+          {finalWorkout.map((exercise) => (
+            <Link key={exercise.id} to={`/exerciseinfo/${exercise.id}`}>
+              <li>{exercise["name"]}</li>
+            </Link>
+          ))}{" "}
         </ul>
       </section>
+      <button onClick={() => saveWorkout(finalWorkout.id)} type="submit">
+        Save Workout
+      </button>
       <Outlet />
     </div>
   );
