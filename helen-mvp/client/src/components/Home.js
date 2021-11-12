@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 
 export default function Home() {
-  let [workout, setWorkout] = useState({
-    time: 0,
-    equipment: "",
-    bodyPart: "",
-  });
+  let initialState = { time: 0, equipment: "", bodyPart: "" };
+  const [workout, setWorkout] = useState(initialState);
 
   let [workoutParts, setWorkoutParts] = useState([]);
   const { time, equipment, bodyPart } = workout;
@@ -43,13 +40,19 @@ export default function Home() {
       data.sort(() => Math.random() - Math.random()).slice(0, workout.time / 10)
     );
     console.log(finalWorkout);
+  };
+
+  useEffect(() => {
+    createIdString();
+  }, [finalWorkout]);
+
+  const createIdString = () => {
     let result = [];
     for (let value of finalWorkout) {
       result.push(value.id);
     }
-    setIdString(result.join(" "));
+    setIdString(result.join(","));
   };
-  console.log(idString);
 
   const saveWorkout = () => {
     fetch("/workouts", {
@@ -64,7 +67,7 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((json) => setWorkoutParts(json));
-    setWorkout({ [time]: 0, [equipment]: "", [bodyPart]: "" });
+    setWorkout(initialState);
     setIdString("");
   };
 
@@ -74,11 +77,11 @@ export default function Home() {
         {" "}
         <h1>Work Me Out</h1>{" "}
       </Link>
-      <Link to={`/Exercises`}>
+      <Link to={`/Workouts`}>
         {" "}
         <h3>My Workouts</h3>{" "}
       </Link>
-      <Link to={`/Workouts`}>
+      <Link to={`/Exercises`}>
         {" "}
         <h3>Exercise Library</h3>{" "}
       </Link>
@@ -98,11 +101,10 @@ export default function Home() {
         Equipment avaliable?
         <br />
         <select name="equipment" value={equipment} onChange={handleInputChange}>
+          <option defaultValue>Please choose</option>
           <option value="1">Barbell</option>
           <option value="8">Bench</option>
-          <option selected value="3" selected>
-            Dumbell
-          </option>
+          <option value="3">Dumbell</option>
           <option value="4">Mat</option>
           <option value="9">Incline Bench</option>
           <option value="10">Kettlebell</option>
@@ -117,9 +119,7 @@ export default function Home() {
         <select name="bodyPart" value={bodyPart} onChange={handleInputChange}>
           <option value="8">Upper Body</option>
           <option value="9">Lower Body</option>
-          <option selected value="" selected>
-            Full Body
-          </option>
+          <option value="">Full Body</option>
           <option value="10">Abs</option>
         </select>
         <button type="submit">Work me out!</button>

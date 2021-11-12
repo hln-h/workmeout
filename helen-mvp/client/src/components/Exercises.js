@@ -1,43 +1,41 @@
-// import React, { useState } from "react";
-// import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-// import { useParams } from "react-router-dom";
+export default function Exercises() {
+  const [exerciseName, setExerciseName] = useState([]);
 
-// export default function ExerciseInfo() {
-//   const { id } = useParams();
-//   const [data, setData] = useState({});
-//   const [description, setDescription] = useState("");
-//   const [image, setImage] = useState(null);
-//   const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    getWorkouts();
+  }, []);
 
-//   const getData = async () => {
-//     const response = await fetch(`https://wger.de/api/v2/exerciseinfo/${id}`);
-//     const data = await response.json();
-//     setData(data);
-//     setDescription(data.description);
-//     console.log(data);
-//     data.images.length ? setImage(data.images[0].image) : setImage("");
-//   };
-//   // ​
-//   useEffect(() => {
-//     getData();
-//   }, [id]);
+  const getWorkouts = async (e) => {
+    try {
+      const response = await fetch(
+        `https://wger.de/api/v2/exercise/?language=2`
+      );
+      if (!response.ok) throw new Error(response.statusText);
+      const data = await response.json();
+      console.log(data);
+      setExerciseName(data.results);
+    } catch (error) {
+      console.log("error");
+    }
+  };
 
-//   return (
-//     <div>
-//       {" "}
-//       <button onClick={() => setVisible(!visible)}>
-//         {visible ? "Hide info" : "Show info"}
-//       </button>
-//       {visible && (
-//         <div>
-//           <h3>{data.name}</h3>
-//           How to:
-//           <br />
-//           <div dangerouslySetInnerHTML={{ __html: description }} />
-//           <section>{image && <img src={image} />}</section>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <Link to={`/`}>
+        {" "}
+        <h1>Home</h1>{" "}
+      </Link>{" "}
+      <ul id="exerciseData">
+        {exerciseName.map((data) => (
+          <li key={data.id}>
+            {data["name"]}:{" "}
+            <div dangerouslySetInnerHTML={{ __html: data.description }} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
