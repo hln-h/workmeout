@@ -18,7 +18,7 @@ con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
 
-  let sql = `CREATE TABLE workoutParts (id INT NOT NULL AUTO_INCREMENT, activity TEXT NOT NULL, workoutId INT NOT NULL, PRIMARY KEY (id)); CREATE TABLE workouts (id INT NOT NULL AUTO_INCREMENT, bodyPart TEXT NOT NULL, time INT NOT NULL, equipment INT NOT NULL, PRIMARY KEY (id));`;
+  let sql = `CREATE TABLE workoutParts (id INT NOT NULL AUTO_INCREMENT, activity TEXT NOT NULL, apiId INT NOT NULL, workoutId INT NOT NULL, PRIMARY KEY (id)); CREATE TABLE workouts (id INT NOT NULL AUTO_INCREMENT, bodyPart INT NOT NULL, time INT NOT NULL, equipment INT NOT NULL, PRIMARY KEY (id));`;
 
   con.query(sql, function (err, result) {
     if (err) throw err;
