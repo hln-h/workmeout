@@ -24,14 +24,31 @@ export default function Exercises() {
 
   return (
     <div>
-      <Link to={`/`}>
+      <ul class="nav nav-pills nav-justified flex-column flex-sm-row">
+        <li class="nav-item">
+          <a class="nav-link" class="nav-link" href="/">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/Workouts">
+            My Workouts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/Exercises">
+            Exercise Library
+          </a>
+        </li>
+      </ul>
+      {/* <Link to={`/`}>
         {" "}
         <h1>Home</h1>{" "}
-      </Link>{" "}
-      <ul id="exerciseData">
+      </Link>{" "} */}
+      <ul class="list-group" id="exerciseData">
         {exerciseName.map((data) => (
-          <li key={data.id}>
-            {data["name"]}:{" "}
+          <li class="list-group-item" key={data.id}>
+            <div class="fw-bold">{data["name"]}:</div>
             <div dangerouslySetInnerHTML={{ __html: data.description }} />
           </li>
         ))}

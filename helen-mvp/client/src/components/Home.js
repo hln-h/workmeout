@@ -73,7 +73,24 @@ export default function Home() {
 
   return (
     <div className="App">
-      <Link to={`/`}>
+      <ul class="nav nav-pills nav-justified flex-column flex-sm-row sticky-top">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Workouts">
+            My Workouts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Exercises">
+            Exercise Library
+          </a>
+        </li>
+      </ul>
+      {/* <Link to={`/`}>
         {" "}
         <h1>Work Me Out</h1>{" "}
       </Link>
@@ -84,45 +101,77 @@ export default function Home() {
       <Link to={`/Exercises`}>
         {" "}
         <h3>Exercise Library</h3>{" "}
-      </Link>
+      </Link> */}
       <form onSubmit={(e) => handleSubmit(e)}>
         <h2>Create a workout:</h2>
         <br />
-        Duration of workout? (mins)
-        <br />
-        <input
-          placeholder="Minutes"
-          name="time"
-          value={time}
-          type="text"
-          onChange={handleInputChange}
-        />
-        <br />
-        Equipment avaliable?
-        <br />
-        <select name="equipment" value={equipment} onChange={handleInputChange}>
-          <option defaultValue>Please choose</option>
-          <option value="1">Barbell</option>
-          <option value="8">Bench</option>
-          <option value="3">Dumbell</option>
-          <option value="4">Mat</option>
-          <option value="9">Incline Bench</option>
-          <option value="10">Kettlebell</option>
-          <option value="7">None- bodyweight</option>
-          <option value="6">Pull-up Bar</option>
-          <option value="5">Swiss Ball</option>
-          <option value="2">SZ Bar</option>
-        </select>
-        <br />
-        What do you want to train?
-        <br />
-        <select name="bodyPart" value={bodyPart} onChange={handleInputChange}>
-          <option value="8">Upper Body</option>
-          <option value="9">Lower Body</option>
-          <option value="">Full Body</option>
-          <option value="10">Abs</option>
-        </select>
-        <button type="submit">Work me out!</button>
+        <div class="row mb-3">
+          <label for="time" class="col-sm-2 col-form-label">
+            Duration? (mins)
+          </label>
+          <div class="col-sm-10 ">
+            <input
+              class="form-control"
+              id="time"
+              placeholder="Minutes"
+              name="time"
+              value={time}
+              type="text"
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="equipment" class="col-sm-2 col-form-label">
+            Equipment avaliable?
+          </label>
+          <div class="col-sm-10 ">
+            <select
+              id="equipment"
+              class="form-select form-select-lg mb-3 col-sm-10"
+              name="equipment"
+              value={equipment}
+              onChange={handleInputChange}
+            >
+              <option defaultValue>Please choose</option>
+              <option value="1">Barbell</option>
+              <option value="8">Bench</option>
+              <option value="3">Dumbell</option>
+              <option value="4">Mat</option>
+              <option value="9">Incline Bench</option>
+              <option value="10">Kettlebell</option>
+              <option value="7">None- bodyweight</option>
+              <option value="6">Pull-up Bar</option>
+              <option value="5">Swiss Ball</option>
+              <option value="2">SZ Bar</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="bodyPart" class="col-sm-2 col-form-label">
+            What do you want to train?
+          </label>
+          <div class="col-sm-10 ">
+            <select
+              id="bodyPart"
+              class="form-select form-select-lg mb-3 col-sm-10"
+              name="bodyPart"
+              value={bodyPart}
+              onChange={handleInputChange}
+            >
+              <option value="8">Upper Body</option>
+              <option value="9">Lower Body</option>
+              <option value="">Full Body</option>
+              <option value="10">Abs</option>
+            </select>
+            <button
+              class="btn btn-outline-primary d-grid gap-2 col-6 "
+              type="submit"
+            >
+              WORK ME OUT
+            </button>
+          </div>
+        </div>
       </form>
 
       <section>
@@ -136,7 +185,11 @@ export default function Home() {
           ))}{" "}
         </ul>
       </section>
-      <button onClick={() => saveWorkout(finalWorkout.id)} type="submit">
+      <button
+        class="btn btn-outline-success d-grid gap-2 col-6 "
+        onClick={() => saveWorkout(finalWorkout.id)}
+        type="submit"
+      >
         Save Workout
       </button>
       <Outlet />

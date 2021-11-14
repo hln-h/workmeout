@@ -24,7 +24,10 @@ export default function ExerciseInfo() {
   return (
     <div>
       {" "}
-      <button onClick={() => setVisible(!visible)}>
+      <button
+        class="btn btn-outline-info d-grid gap-2 col-6 "
+        onClick={() => setVisible(!visible)}
+      >
         {visible ? "Hide info" : "Show info"}
       </button>
       {visible && (

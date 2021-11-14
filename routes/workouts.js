@@ -3,8 +3,27 @@ var router = express.Router();
 const db = require("../model/helper");
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+// router.get("/", function (req, res, next) {
+//   res.render("index", { title: "Express" });
+// });
+
+//GET all saved workouts
+router.get("/", async (req, res) => {
+  try {
+    const results = await db("SELECT * FROM workouts;");
+    res.send(results.data);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+//GET one workout
+router.get("/:id", (req, res, next) => {
+  db(`SELECT * FROM workouts where id=${+id};`)
+    .then((results) => {
+      res.send(results.data);
+    })
+    .catch((err) => res.status(500).send(err));
 });
 
 //SAVE a workout to the DB

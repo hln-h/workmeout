@@ -20,6 +20,11 @@ app.use("/workouts", workoutsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+  res.type("json");
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,POST,DELETE",
+  });
   next(createError(404));
 });
 
