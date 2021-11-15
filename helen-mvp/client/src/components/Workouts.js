@@ -4,18 +4,16 @@ import { Link } from "react-router-dom";
 export default function Workouts() {
   const [displayedWorkout, setDisplayedWorkout] = useState([]);
   const [workoutList, setWorkoutList] = useState([]);
-  // const [displayedDetails, setDisplayedDetails] = useState([]);
-  // const [data, setData] = [];
+  const [displayedDetails, setDisplayedDetails] = useState([]);
 
   useEffect(() => {
     showSavedWorkouts();
-  }, []);
+  }, [displayedWorkout]);
 
   const showSavedWorkouts = async () => {
     try {
       const res = await fetch("/workouts");
       const data = await res.json();
-      console.log(data);
       setWorkoutList(data);
     } catch (error) {
       console.log(error);
@@ -57,34 +55,47 @@ export default function Workouts() {
       return "SZ Bar";
     }
   };
-  // const makeDisplayed = (clickedWorkout) => {
-  //   if (displayedWorkout && clickedWorkout === displayedWorkout.id)
-  //     setDisplayedWorkout(null);
-  //   else setDisplayedWorkout(clickedWorkout);
-  //   // getDisplayData();
-  // };
 
-  // const getDisplayData = () => {
-  //   fetch(`/workouts/${displayedWorkout.id}`)
-  //     .then((response) => response.json())
-  //     .then((json) => {
-  //       setDisplayedDetails(json);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   callApi();
-  // };
+  const makeDisplayed = async (workout) => {
+    await setDisplayedWorkout(workout);
+    callApi();
+    console.log(displayedWorkout);
+  };
 
-  // const callApi=async()=>{
-  //   displayedDetails.exerciseApiIds.splice(",")
-  //   .map(element) => (
-  //     const res = await fetch(`https://wger.de/api/v2/exerciseinfo/${element}`);
-  //    const data = await response.json();
-  //    setData(data.results);
-  // } catch (error) {
-  //   console.log("error");
-  // })}
+  const callApi = async () => {
+    const ids = displayedWorkout.exerciseApiIds?.split(",") || [];
+    // const results =[]
+    // try {
+    //   for await (const id of ids) {
+    //     const response = await fetch(
+    //       `https://wger.de/api/v2/exerciseinfo/${id}`
+    //       // `https://wger.de/api/v2/exerciseinfo/112`
+    //     );
+    //     const json = await response.json();
+    //     console.log("json", json);
+    //   }
+
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+    try {
+      const promises = ids.map((id) =>
+        fetch(`https://wger.de/api/v2/exerciseinfo/${id}`).then((res) =>
+          res.json()
+        )
+      );
+      const results = await Promise.all(promises);
+      console.log(results);
+      setDisplayedDetails(results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    callApi();
+  }, [displayedWorkout]);
 
   const deleteWorkout = (id) => {
     fetch(`/workouts/${id}`, {
@@ -99,15 +110,32 @@ export default function Workouts() {
 
   return (
     <div>
-      <Link to={`/`}>
+      <ul class="nav nav-pills nav-justified flex-column flex-sm-row">
+        <li class="nav-item">
+          <a class="nav-link" class="nav-link" href="/">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active " aria-current="page" href="/Workouts">
+            My Workouts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/Exercises">
+            Exercise Library
+          </a>
+        </li>
+      </ul>
+      {/* <Link to={`/`}>
         {" "}
         <h1>Home</h1>{" "}
-      </Link>{" "}
+      </Link>{" "} */}
       <ul id="savedWorkouts">
         {" "}
         Saved workouts:{" "}
         {workoutList.map((workout) => (
-          <li key={workout.id}>
+          <li key={workout.id} onClick={() => makeDisplayed(workout)}>
             Workout: {workout.time} minutes {""}{" "}
             {bodyPartToString(workout.bodyPart)} with{" "}
             {equipmentToString(workout.equipment)} {""}
@@ -115,12 +143,16 @@ export default function Workouts() {
           </li>
         ))}
       </ul>
-      {/* Displayed workout:
-      {displayedWorkout && data.description} */}
+      Displayed workout:
+      <ul class="list-group" id="exerciseData">
+        {displayedDetails.map((data) => (
+          <li class="list-group-item" key={data.id}>
+            <div class="fw-bold">{data["name"]}:</div>
+            <div dangerouslySetInnerHTML={{ __html: data.description }} />
+          </li>
+        ))}
+      </ul>
+      {}
     </div>
   );
 }
-
-{
-}
-// onClick={() => makeDisplayed(item)}

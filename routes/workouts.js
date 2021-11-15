@@ -2,11 +2,6 @@ var express = require("express");
 var router = express.Router();
 const db = require("../model/helper");
 
-/* GET home page. */
-// router.get("/", function (req, res, next) {
-//   res.render("index", { title: "Express" });
-// });
-
 //GET all saved workouts
 router.get("/", async (req, res) => {
   try {
@@ -19,6 +14,7 @@ router.get("/", async (req, res) => {
 
 //GET one workout
 router.get("/:id", (req, res, next) => {
+  const { id } = req.params;
   db(`SELECT * FROM workouts where id=${+id};`)
     .then((results) => {
       res.send(results.data);
