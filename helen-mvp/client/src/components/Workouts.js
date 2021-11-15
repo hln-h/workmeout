@@ -9,18 +9,54 @@ export default function Workouts() {
 
   useEffect(() => {
     showSavedWorkouts();
-  }, [workoutList]);
+  }, []);
 
   const showSavedWorkouts = async () => {
     try {
       const res = await fetch("/workouts");
-      const data = res.json();
+      const data = await res.json();
+      console.log(data);
       setWorkoutList(data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const bodyPartToString = (bodyPart) => {
+    if (bodyPart === "9") {
+      return "Lower body";
+    } else if (bodyPart === "8") {
+      return "Upper body";
+    } else if (bodyPart === "10") {
+      return "Abs";
+    } else {
+      return "Full body";
+    }
+  };
+
+  const equipmentToString = (equipment) => {
+    if (equipment === "1") {
+      return "Barbell";
+    } else if (equipment === "8") {
+      return "Bench";
+    } else if (equipment === "3") {
+      return "Dumbell";
+    } else if (equipment === "4") {
+      return "Mat";
+    } else if (equipment === "9") {
+      return "Incline Bench";
+    } else if (equipment === "10") {
+      return "Kettlebell";
+    } else if (equipment === "7") {
+      return "None- bodyweight";
+    } else if (equipment === "6") {
+      return "Pull-up Bar";
+    } else if (equipment === "5") {
+      return "Swiss Ball";
+    } else if (equipment === "2") {
+      return "SZ Bar";
+    }
+  };
   // const makeDisplayed = (clickedWorkout) => {
   //   if (displayedWorkout && clickedWorkout === displayedWorkout.id)
   //     setDisplayedWorkout(null);
@@ -50,16 +86,16 @@ export default function Workouts() {
   //   console.log("error");
   // })}
 
-  //   const deleteWorkout = () => {
-  //     fetch(`/workouts/${id}`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //       .then((res) => res.json())
-  //       .then((json) => setWorkoutList(json));
-  //   };
+  const deleteWorkout = (id) => {
+    fetch(`/workouts/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => setWorkoutList(json));
+  };
 
   return (
     <div>
@@ -72,7 +108,10 @@ export default function Workouts() {
         Saved workouts:{" "}
         {workoutList.map((workout) => (
           <li key={workout.id}>
-            {workout.time} ,{workout.equipment} ,{workout.bodyPart}
+            Workout: {workout.time} minutes {""}{" "}
+            {bodyPartToString(workout.bodyPart)} with{" "}
+            {equipmentToString(workout.equipment)} {""}
+            <button onClick={() => deleteWorkout(workout.id)}>Delete</button>
           </li>
         ))}
       </ul>
@@ -83,8 +122,5 @@ export default function Workouts() {
 }
 
 {
-  /* <button onClick={() => deleteWorkout(workoutListItem.id)}>
-     Delete
-</button> */
 }
 // onClick={() => makeDisplayed(item)}
