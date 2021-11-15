@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import {} from "react-router-dom";
 
 export default function Exercises() {
   const [exerciseName, setExerciseName] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     getWorkouts();
@@ -24,35 +25,48 @@ export default function Exercises() {
 
   return (
     <div>
-      <ul class="nav nav-pills nav-justified flex-column flex-sm-row">
-        <li class="nav-item">
-          <a class="nav-link" class="nav-link" href="/">
+      <ul className="nav nav-pills nav-justified flex-column flex-sm-row sticky-top bg-light">
+        <li className="nav-item">
+          <a className="nav-link" className="nav-link" href="/">
             Home
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link " href="/Workouts">
+        <li className="nav-item">
+          <a className="nav-link " href="/Workouts">
             My Workouts
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/Exercises">
+        <li className="nav-item">
+          <a className="nav-link active" aria-current="page" href="/Exercises">
             Exercise Library
           </a>
         </li>
       </ul>
-      {/* <Link to={`/`}>
-        {" "}
-        <h1>Home</h1>{" "}
-      </Link>{" "} */}
-      <ul class="list-group" id="exerciseData">
-        {exerciseName.map((data) => (
-          <li class="list-group-item" key={data.id}>
-            <div class="fw-bold">{data["name"]}:</div>
-            <div dangerouslySetInnerHTML={{ __html: data.description }} />
-          </li>
-        ))}
-      </ul>
+
+      <section className="container-fluid">
+        <br />
+        <h2 className="text-left">Exercise library</h2>
+        <br />
+        <ul className="list-group" id="exerciseData">
+          {exerciseName.map((data) => (
+            <li className="list-group-item bg-light" key={data.id}>
+              <div className="fw-bold">{data["name"]}</div>
+              <button
+                class="btn btn-outline-info float-end  d-grid gap-2 col-2  "
+                onClick={() => setVisible(!visible)}
+              >
+                {visible ? "Hide info" : "Show info"}
+              </button>
+              {visible && (
+                <div
+                  className="fw-light"
+                  dangerouslySetInnerHTML={{ __html: data.description }}
+                />
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

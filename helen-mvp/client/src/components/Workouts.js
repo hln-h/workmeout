@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import {} from "react-router-dom";
 
 export default function Workouts() {
   const [displayedWorkout, setDisplayedWorkout] = useState([]);
   const [workoutList, setWorkoutList] = useState([]);
   const [displayedDetails, setDisplayedDetails] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     showSavedWorkouts();
@@ -106,23 +107,24 @@ export default function Workouts() {
     })
       .then((res) => res.json())
       .then((json) => setWorkoutList(json));
+    alert("Your workout has been deleted!");
   };
 
   return (
     <div>
-      <ul class="nav nav-pills nav-justified flex-column flex-sm-row">
-        <li class="nav-item">
-          <a class="nav-link" class="nav-link" href="/">
+      <ul className="nav nav-pills nav-justified flex-column flex-sm-row sticky-top bg-light">
+        <li className="nav-item">
+          <a className="nav-link" className="nav-link" href="/">
             Home
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active " aria-current="page" href="/Workouts">
+        <li className="nav-item">
+          <a className="nav-link active " aria-current="page" href="/Workouts">
             My Workouts
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link " href="/Exercises">
+        <li className="nav-item">
+          <a className="nav-link " href="/Exercises">
             Exercise Library
           </a>
         </li>
@@ -131,28 +133,75 @@ export default function Workouts() {
         {" "}
         <h1>Home</h1>{" "}
       </Link>{" "} */}
-      <ul id="savedWorkouts">
-        {" "}
-        Saved workouts:{" "}
-        {workoutList.map((workout) => (
-          <li key={workout.id} onClick={() => makeDisplayed(workout)}>
-            Workout: {workout.time} minutes {""}{" "}
-            {bodyPartToString(workout.bodyPart)} with{" "}
-            {equipmentToString(workout.equipment)} {""}
-            <button onClick={() => deleteWorkout(workout.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      Displayed workout:
-      <ul class="list-group" id="exerciseData">
-        {displayedDetails.map((data) => (
-          <li class="list-group-item" key={data.id}>
-            <div class="fw-bold">{data["name"]}:</div>
-            <div dangerouslySetInnerHTML={{ __html: data.description }} />
-          </li>
-        ))}
-      </ul>
-      {}
+      <div className="container-fluid">
+        <div class="row">
+          <div class="col">
+            <div className="row mb-3">
+              <ul className="list-group" id="savedWorkouts">
+                {" "}
+                <br />
+                <h2 className="text-left">Saved workouts</h2>
+                <br />
+                {workoutList.map((workout) => (
+                  <li
+                    className="list-group-item d-flex justify-content-between align-items-left"
+                    key={workout.id}
+                    onClick={() => makeDisplayed(workout)}
+                  >
+                    Workout: {workout.time} minutes {""}{" "}
+                    {bodyPartToString(workout.bodyPart)} with{" "}
+                    {equipmentToString(workout.equipment)} {""}
+                    <div>
+                      <button
+                        className=" list-group-item btn btn-outline-danger d-grid gap-2 col-15 rounded-pill "
+                        onClick={() => deleteWorkout(workout.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <br />
+          <div className="col-sm-7 ">
+            <br />
+            <br />
+
+            {displayedDetails[0] && (
+              <div>
+                <h3>Selected:</h3>
+                <ul className="list-group" id="exerciseData">
+                  {displayedDetails.map((data) => (
+                    <li
+                      className="list-group-item text-primary bg-light"
+                      key={data.id}
+                    >
+                      <div className="fw-bold">{data["name"]}</div>
+                      <button
+                        class=" btn btn-outline-info float-end d-grid gap-2 col-2 
+                     "
+                        onClick={() => setVisible(!visible)}
+                      >
+                        {visible ? "Hide info" : "Show info"}
+                      </button>
+                      {visible && (
+                        <div
+                          className="col-sm-7 text-black "
+                          dangerouslySetInnerHTML={{ __html: data.description }}
+                        />
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
+// class=""badge bg-primary rounded-pill

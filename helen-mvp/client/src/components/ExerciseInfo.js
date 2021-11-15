@@ -23,22 +23,34 @@ export default function ExerciseInfo() {
 
   return (
     <div>
-      {" "}
-      <button
-        class="btn btn-outline-info d-grid gap-2 col-6 "
-        onClick={() => setVisible(!visible)}
-      >
-        {visible ? "Hide info" : "Show info"}
-      </button>
-      {visible && (
-        <div>
-          <h3>{data.name}</h3>
-          How to:
-          <br />
-          <div dangerouslySetInnerHTML={{ __html: description }} />
-          <section>{image && <img src={image} />}</section>
-        </div>
-      )}
+      <div className="container-fluid">
+        <br />
+        <button
+          class="btn btn-outline-info float-end  d-grid gap-2 col-3 "
+          onClick={() => setVisible(!visible)}
+        >
+          {visible ? "Hide info" : "Show info"}
+        </button>
+
+        {visible && (
+          <div>
+            <h6 className="fw-bold  ">{data.name}</h6>
+            <br />
+            How to:
+            <div
+              className="fw-light fst-italic"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+            {image && (
+              <img
+                src={image}
+                className="rounded float-end float-end img-thumbnail d-grid col-5  "
+                alt="..."
+              />
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
