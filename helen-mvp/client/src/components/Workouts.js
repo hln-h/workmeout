@@ -65,6 +65,7 @@ export default function Workouts() {
 
   const callApi = async () => {
     const ids = displayedWorkout.exerciseApiIds?.split(",") || [];
+    //alternative way to promises:
     // const results =[]
     // try {
     //   for await (const id of ids) {

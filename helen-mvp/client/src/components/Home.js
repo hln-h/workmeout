@@ -91,18 +91,7 @@ export default function Home() {
           </a>
         </li>
       </ul>
-      {/* <Link to={`/`}>
-        {" "}
-        <h1>Work Me Out</h1>{" "}
-      </Link>
-      <Link to={`/Workouts`}>
-        {" "}
-        <h3>My Workouts</h3>{" "}
-      </Link>
-      <Link to={`/Exercises`}>
-        {" "}
-        <h3>Exercise Library</h3>{" "}
-      </Link> */}
+
       <div class="container-fluid">
         <div class="row">
           <div class="col">

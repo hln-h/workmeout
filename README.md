@@ -51,13 +51,13 @@ DB_NAME=workmeout
 
 Database:
 +----------------+--------------+------+-----+---------+----------------+
-| Field | Type | Null | Key | Default | Extra |
+| Field          | Type         | Null | Key | Default | Extra          |
 +----------------+--------------+------+-----+---------+----------------+
-| id | int | NO | PRI | NULL | auto_increment |
-| bodyPart | varchar(250) | YES | | NULL | |
-| time | int | NO | | NULL | |
-| equipment | varchar(250) | YES | | NULL | |
-| exerciseApiIds | varchar(250) | YES | | NULL | |
+| id             | int          | NO   | PRI | NULL    | auto_increment |
+| bodyPart       | varchar(250) | YES  |     | NULL    |                |
+| time           | int          | NO   |     | NULL    |                |
+| equipment      | varchar(250) | YES  |     | NULL    |                |
+| exerciseApiIds | varchar(250) | YES  |     | NULL    |                |
 +----------------+--------------+------+-----+---------+----------------+
 
 ## Roadmap
