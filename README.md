@@ -1,14 +1,8 @@
-# workmeout
-
-Development has slowed down or stopped completely.
-
-## Name
-
-Work Me Out
+# WorkMeOut
 
 ## Description
 
-Creates a workout for you based on information such as time, parts of the body you wish to train, and equipment available. You can save workout combinations and revisit them in the saved section. You can also access futher information about each exercise (from the API) which gives you tips about how to perform each move.
+A website which creates a workout for you based on information such as time, parts of the body you wish to train, and equipment available. You can save workout combinations and revisit them in the saved section. You can also access futher information about each exercise (from the API) which gives you tips about how to perform each move.
 
 ## Setup
 
